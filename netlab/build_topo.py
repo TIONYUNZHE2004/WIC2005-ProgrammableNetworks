@@ -52,12 +52,29 @@ def check_mine(spec):
 
 
 def check(spec):
-    """Return a list of problems in the description (an empty list means it looks fine).
-
-    Week 2 task: report any IP address that is used by more than one host.
-    """
     problems = []
-    # TODO: your code here
+    seen = {}
+
+    for host in spec["hosts"]:
+        for key in ("ip", "ipv6"):
+            if key not in host:
+                continue
+
+            try:
+                address = ipaddress.ip_interface(host[key]).ip
+            except ValueError:
+                continue  # check_mine() reports invalid addresses
+
+            identifier = (key, address)
+
+            if identifier in seen:
+                problems.append(
+                    f"{host['name']} and {seen[identifier]} "
+                    f"both use {address}"
+                )
+            else:
+                seen[identifier] = host["name"]
+
     return problems
 
 
