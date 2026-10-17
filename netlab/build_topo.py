@@ -55,25 +55,36 @@ def check(spec):
     problems = []
     seen = {}
 
+    # Validate duplicate IPv4 and IPv6 addresses
     for host in spec["hosts"]:
         for key in ("ip", "ipv6"):
-            if key not in host:
+            value = host.get(key)
+
+            if not value:
                 continue
 
             try:
-                address = ipaddress.ip_interface(host[key]).ip
+                address = ipaddress.ip_interface(value).ip
             except ValueError:
-                continue  # check_mine() reports invalid addresses
+                continue  # check_mine() handles invalid addresses
 
-            identifier = (key, address)
-
-            if identifier in seen:
+            if address in seen:
                 problems.append(
-                    f"{host['name']} and {seen[identifier]} "
+                    f"{host['name']} and {seen[address]} "
                     f"both use {address}"
                 )
             else:
-                seen[identifier] = host["name"]
+                seen[address] = host["name"]
+
+    # Validate link endpoints
+    nodes = set(spec["switches"])
+    nodes.update(h["name"] for h in spec["hosts"])
+
+    for a, b in spec["links"]:
+        if a not in nodes:
+            problems.append(f"Unknown node {a} in link [{a}, {b}]")
+        if b not in nodes:
+            problems.append(f"Unknown node {b} in link [{a}, {b}]")
 
     return problems
 

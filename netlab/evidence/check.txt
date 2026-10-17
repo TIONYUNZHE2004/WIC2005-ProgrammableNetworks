@@ -1,0 +1,5 @@
+PROBLEM: h6 and h2 both use 10.41.0.2
+PROBLEM: h6 and h2 both use fd00:4941::2
+PROBLEM: Unknown node h7 in link [h7, s9]
+PROBLEM: Unknown node s9 in link [h7, s9]
+Fix the description and try again.
