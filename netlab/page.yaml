@@ -3,27 +3,27 @@
 # leave a blank line between paragraphs. Refer to YOUR network and YOUR evidence.
 # Never put your name or full student ID here: the page is public.
 
-repository: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+repository: https://github.com/TIONYUNZHE2004/WIC2005-ProgrammableNetworks
 
 answers:
   planes:
     question: "Where are the data, control and management planes in your network?"
-    answer: ""
+    answer: "Data plane: consist of 3 linux bridges/switches that can forward ethernet frame between all the hosts existing. The switches will learn MAC addresses locall without external help. Control Plane: Didn't use any external SDN controller. Management Plane: YAML configuration, the python scripts and Mininet env commands used to build the network."
   learning:
     question: "How did your switches learn which port leads to each host? Use your MAC table evidence."
-    answer: ""
+    answer: "The switches learns source of MAC address of incoming frames and associates it with the incoming port. Unknown destination frame are flooded to other ports. So after 'pingall' command used, the MAC table evidence from s1 demonstrates the learning without manually configuring forwarding entries."
   kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
-    answer: ""
+    answer: "For this assignment, I think it belongs to automated configuration management. We use YAML to describe our network and Python script to build it automatically. We didn't use P4 to modify the packet processing, or any SDN controller like OpenFlow. We also didn't use NETCONF or RESTCONF to configure network devices."
   two_am:
     question: "Week 1's 2 a.m. change on 40 switches: what would be different if those switches were described like your network?"
-    answer: ""
+    answer: "No need to manually configure 40 switches one by one, network engineers could maintain a common configuration model and use automation to apply change. Validation could detect mistake before the deployment process. Git will record the historical changes and support reverting process when facing issues. "
   model:
     question: "What's the difference between your network's data model and its serialisation? Use YAML and JSON as the example."
-    answer: ""
+    answer: "Data model describe our network, like the switches, hosts, IP addresses and links. YAML and JSON are just different formats to store the same data. Convert YAML to JSON and both can still build the same network. The main thing is we lost is the comments and original formatting in YAML and need to follow the JSON format (not reading friendly to human)."
   check:
     question: "Why is it better to catch bad data in check() than with pingall? What did IPv6 notice about a duplicate address that IPv4 didn't?"
-    answer: ""
+    answer: "Using check() is better because it can detect wrong config before building the network. 'pingall' still pass some test even when there are duplicate IPs. IPv6 detects duplicate addresses using DAD, but IPv4 accept them without the same check."
   git:
     question: "What does your Git history give you that copying files into folders named topology-v2-final wouldn't?"
-    answer: ""
+    answer: "Git helps us track changes and go back to previous versions. We can also compare what changed between commits, it is easier than keeping many folder named to difference version."
