@@ -1,0 +1,3 @@
+traceroute to 10.41.20.10 (10.41.20.10), 5 hops max, 60 byte packets
+ 1  10.41.10.1  0.074 ms !N
+RTNETLINK answers: Network is unreachable
