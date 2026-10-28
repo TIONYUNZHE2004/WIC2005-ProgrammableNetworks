@@ -2,18 +2,18 @@
 # A few sentences each, in your own words, about YOUR network and YOUR evidence.
 # Leave a blank line between paragraphs. Never put your name or full student ID here.
 
-repository: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+repository: https://github.com/TIONYUNZHE2004/WIC2005-ProgrammableNetworks
 
 answers:
   design:
     question: "Describe your design: why these routers, LANs and links, and how you chose the addresses."
-    answer: ""
+    answer: "UI used 4 routers in a ring (r1-r2-r3-r4-r1), each with one LAN and one host. The ring means every router has two ways to reach any other router. I picked the LAN addresses in pairs so I could summarise them: 10.41.10.0/24 and 10.41.11.0/24 on the top, 10.41.20.0/24 and 10.41.21.0/24 on the bottom. The links are /30s, named after the routers they connect (12, 23, 34, 14). Each router has a route to its neighbour's LAN, one /23 for the other side, and routes to the two links it isn't connected to. I added those link routes after pingall showed routers couldn't reply to each other."
   summary:
     question: "Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?"
-    answer: ""
+    answer: "r1 and r2 use 10.41.20.0/23 to reach both h3 and h4, and r3 and r4 use 10.41.10.0/23 for h1 and h2. 10.41.20.0/23 covers 10.41.20.0 to 10.41.21.255. The third octets, 20 and 21, only differ in the last bit, so 23 bits are shared. 20 is even, so the /23 covers exactly these two LANs and nothing more."
   failure:
     question: "When you took a link down, what happened, and why couldn't your routes recover even though another path existed? What would have recovered?"
-    answer: ""
+    answer: "I took down the r1-r4 link. The traceroute from h1 to h3 stopped at r1 with !N, and ip route get said \"Network is unreachable\". Linux deleted r1's routes that used that link, including the /23. The other path through r2 and r3 was still there, but static routes can't use it. A routing protocol like OSPF would notice and switch to r2 and r3 by itself. A backup static route with a shorter prefix, like 10.41.0.0/16 via r2, would also work, the same way the /20 caught traffic in the lab."
   control_plane:
     question: "In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?"
-    answer: ""
+    answer: "I was the control plane. I worked out every route myself and wrote it in network.yaml. check_paths() checked for loops and missing routes, and build_routed.py put the routes on the routers. That's fine for 4 routers, but not for 40. Every router would need a route to every network, and every change or failure would need a manual fix. A real network needs a routing protocol like OSPF, or an SDN controller, to work out routes automatically. Keeping the network as data and checking it first is still worth doing at that size."
