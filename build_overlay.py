@@ -166,7 +166,7 @@ def check_spec(spec):
 
 
 def check_mtu(spec):
-    """TODO (assignment): every tenant's packets must fit through the tunnel.
+    """Check that every tenant's packets fit through the tunnel.
 
     A tenant's VMs send IP packets up to the tenant's MTU. On the underlay, each one also
     carries VXLAN_OVERHEAD (50) bytes of headers, and the underlay carries IP packets up to its
@@ -177,12 +177,21 @@ def check_mtu(spec):
     before anything is built.
     """
     problems = []
-    # TODO: your code here
+    underlay_mtu = int(spec["underlay"]["mtu"])
+    for tenant in spec["tenants"]:
+        tenant_mtu = int(tenant["mtu"])
+        required = tenant_mtu + VXLAN_OVERHEAD
+        if required > underlay_mtu:
+            problems.append(
+                f"tenant {tenant['name']}: MTU {tenant_mtu} + VXLAN {VXLAN_OVERHEAD} "
+                f"= {required} bytes exceeds underlay MTU {underlay_mtu} "
+                f"by {required - underlay_mtu} bytes"
+            )
     return problems
 
 
 def tenant_commands(spec, hv, tenant):
-    """TODO (assignment): the commands that give one hypervisor one tenant, as a list of strings.
+    """Return the commands that give one hypervisor one tenant.
 
     `hv` is a hypervisor's name; `tenant` is one entry of spec["tenants"]. Every hypervisor that
     hosts the tenant needs, in this order:
@@ -200,8 +209,34 @@ def tenant_commands(spec, hv, tenant):
     The lab's Part 2 and Part 3 commands are your starting point. plan(spec) gives you every
     hypervisor's underlay IP; vm_ports(spec, hv) tells you which port each VM is plugged into.
     """
-    cmds = []
-    # TODO: your code here
+    hosts = {where for _, where in tenant["vms"]}
+    if hv not in hosts:
+        return []
+
+    addresses = plan(spec)["hypervisors"]
+    ports = vm_ports(spec, hv)
+    vni = int(tenant["vni"])
+    bridge = f"br{vni}"
+    vxlan = f"vxlan{vni}"
+    cmds = [
+        f"ip link add {bridge} type bridge",
+        f"ip link set {bridge} up",
+        f"ip link add {vxlan} type vxlan id {vni} local {addresses[hv]} "
+        f"dstport 4789 dev {hv}-eth0",
+        f"ip link set {vxlan} master {bridge}",
+        f"ip link set {vxlan} up",
+    ]
+    for vm, where in tenant["vms"]:
+        if where == hv:
+            cmds.append(f"ip link set {ports[vm]} master {bridge}")
+            cmds.append(f"ip link set {ports[vm]} up")
+
+    # A separate flood destination is needed for each other server in this VNI.
+    for other in spec["hypervisors"]:
+        if other in hosts and other != hv:
+            cmds.append(
+                f"bridge fdb append 00:00:00:00:00:00 dev {vxlan} dst {addresses[other]}"
+            )
     return cmds
 
 
