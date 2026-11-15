@@ -1,0 +1,162 @@
+== Forced MTU 1500 on both tenant and underlay
+UTC: 2026-11-15T07:09:34.696748+00:00
+
+$ it1 ping -c 2 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.670 ms
+64 bytes from 10.41.100.11: icmp_seq=2 ttl=64 time=0.099 ms
+
+--- 10.41.100.11 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1000ms
+rtt min/avg/max/mdev = 0.099/0.384/0.670/0.285 ms
+Exit code: 0
+
+$ it1 ping -c 2 -W 1 -s 1472 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1472(1500) bytes of data.
+
+--- 10.41.100.11 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1001ms
+
+Exit code: 1
+
+$ it1 timeout 12 iperf3 -c 10.41.100.11 -t 5
+Connecting to host 10.41.100.11, port 5201
+[  7] local 10.41.100.10 port 58546 connected to 10.41.100.11 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  7]   0.00-1.06   sec  0.00 Bytes  0.00 bits/sec    2   1.41 KBytes       
+[  7]   1.06-2.01   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes       
+[  7]   2.01-3.01   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes       
+[  7]   3.01-4.01   sec  0.00 Bytes  0.00 bits/sec    1   1.41 KBytes       
+[  7]   4.01-5.06   sec  0.00 Bytes  0.00 bits/sec    0   1.41 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  7]   0.00-5.06   sec  0.00 Bytes  0.00 bits/sec    4             sender
+[  7]   0.00-5.06   sec  0.00 Bytes  0.00 bits/sec                  receiver
+
+iperf Done.
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 736 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 736(764) bytes of data.
+744 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.081 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.081/0.081/0.081/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1104 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1104(1132) bytes of data.
+1112 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.073 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.073/0.073/0.073/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1288 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1288(1316) bytes of data.
+1296 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.071 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.071/0.071/0.071/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1380 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1380(1408) bytes of data.
+1388 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.076 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.076/0.076/0.076/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1426 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1426(1454) bytes of data.
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+Exit code: 1
+
+$ it1 ping -M do -c 1 -W 1 -s 1403 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1403(1431) bytes of data.
+1411 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.071 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.071/0.071/0.071/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1414 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1414(1442) bytes of data.
+1422 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.076 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.076/0.076/0.076/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1420 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1420(1448) bytes of data.
+1428 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.070 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.070/0.070/0.070/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1423 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1423(1451) bytes of data.
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+Exit code: 1
+
+$ it1 ping -M do -c 1 -W 1 -s 1421 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1421(1449) bytes of data.
+1429 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.071 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.071/0.071/0.071/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1422 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1422(1450) bytes of data.
+1430 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.081 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.081/0.081/0.081/0.000 ms
+Exit code: 0
+
+== Confirm the adjacent passing and failing sizes
+
+$ it1 ping -M do -c 1 -W 1 -s 1422 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1422(1450) bytes of data.
+1430 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.081 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.081/0.081/0.081/0.000 ms
+Exit code: 0
+
+$ it1 ping -M do -c 1 -W 1 -s 1423 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 1423(1451) bytes of data.
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+Exit code: 1
+
+$ hv1 ip -d link show vxlan100
+5: vxlan100: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue master br100 state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether 9a:29:7b:76:0c:ec brd ff:ff:ff:ff:ff:ff promiscuity 1  allmulti 1 minmtu 68 maxmtu 65535 
+    vxlan id 100 local 10.41.0.1 dev hv1-eth0 srcport 0 0 dstport 4789 ttl auto ageing 300 udpcsum noudp6zerocsumtx noudp6zerocsumrx 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8001 port_no 0x1 designated_port 32769 designated_cost 0 designated_bridge 8000.42:35:bc:9:a8:52 designated_root 8000.42:35:bc:9:a8:52 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    2.04 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 
+info: Using default fan map value (33)
+Exit code: 0
+

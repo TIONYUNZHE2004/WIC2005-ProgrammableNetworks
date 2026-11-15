@@ -1,0 +1,41 @@
+== IT and BU both have 10.41.100.11
+UTC: 2026-11-15T07:12:51.355801+00:00
+
+$ it1 ping -c 3 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.094 ms
+64 bytes from 10.41.100.11: icmp_seq=2 ttl=64 time=0.093 ms
+64 bytes from 10.41.100.11: icmp_seq=3 ttl=64 time=0.087 ms
+
+--- 10.41.100.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2000ms
+rtt min/avg/max/mdev = 0.087/0.091/0.094/0.003 ms
+Exit code: 0
+
+$ it1 ip neigh show 10.41.100.11
+10.41.100.11 dev it1-eth0 lladdr 02:00:00:64:00:0b REACHABLE 
+Exit code: 0
+
+$ bu2 timeout 5 tcpdump -n -e -l -i bu2-eth0
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on bu2-eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+Exit code: 124 (capture timer ended)
+
+$ bu1 ping -c 2 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.326 ms
+64 bytes from 10.41.100.11: icmp_seq=2 ttl=64 time=0.125 ms
+
+--- 10.41.100.11 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 999ms
+rtt min/avg/max/mdev = 0.125/0.225/0.326/0.100 ms
+Exit code: 0
+
+$ bu1 ip neigh show 10.41.100.11
+10.41.100.11 dev bu1-eth0 lladdr 02:00:00:c8:00:0b REACHABLE 
+Exit code: 0
+

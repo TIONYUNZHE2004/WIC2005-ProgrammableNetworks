@@ -1,0 +1,9 @@
+== Reject invalid MTU before building anything
+UTC: 2026-11-15T07:09:16.969126+00:00
+
+$ python3 build_overlay.py blackhole.yaml
+PROBLEM: tenant it: MTU 1500 + VXLAN 50 = 1550 bytes exceeds underlay MTU 1500 by 50 bytes
+PROBLEM: tenant bu: MTU 1500 + VXLAN 50 = 1550 bytes exceeds underlay MTU 1500 by 50 bytes
+Fix the design and try again: nothing was built.
+Exit code: 1
+

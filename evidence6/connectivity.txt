@@ -1,0 +1,111 @@
+== Every ordered VM pair within its own department
+UTC: 2026-11-15T07:12:57.485728+00:00
+
+$ it1 ping -c 1 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.095 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.095/0.095/0.095/0.000 ms
+Exit code: 0
+
+$ it1 ping -c 1 -W 1 10.41.100.12
+PING 10.41.100.12 (10.41.100.12) 56(84) bytes of data.
+64 bytes from 10.41.100.12: icmp_seq=1 ttl=64 time=0.234 ms
+
+--- 10.41.100.12 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.234/0.234/0.234/0.000 ms
+Exit code: 0
+
+$ it2 ping -c 1 -W 1 10.41.100.10
+PING 10.41.100.10 (10.41.100.10) 56(84) bytes of data.
+64 bytes from 10.41.100.10: icmp_seq=1 ttl=64 time=0.072 ms
+
+--- 10.41.100.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.072/0.072/0.072/0.000 ms
+Exit code: 0
+
+$ it2 ping -c 1 -W 1 10.41.100.12
+PING 10.41.100.12 (10.41.100.12) 56(84) bytes of data.
+64 bytes from 10.41.100.12: icmp_seq=1 ttl=64 time=0.206 ms
+
+--- 10.41.100.12 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.206/0.206/0.206/0.000 ms
+Exit code: 0
+
+$ it3 ping -c 1 -W 1 10.41.100.10
+PING 10.41.100.10 (10.41.100.10) 56(84) bytes of data.
+64 bytes from 10.41.100.10: icmp_seq=1 ttl=64 time=0.069 ms
+
+--- 10.41.100.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.069/0.069/0.069/0.000 ms
+Exit code: 0
+
+$ it3 ping -c 1 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.077 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.077/0.077/0.077/0.000 ms
+Exit code: 0
+
+$ bu1 ping -c 1 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.078 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.078/0.078/0.078/0.000 ms
+Exit code: 0
+
+$ bu1 ping -c 1 -W 1 10.41.100.12
+PING 10.41.100.12 (10.41.100.12) 56(84) bytes of data.
+64 bytes from 10.41.100.12: icmp_seq=1 ttl=64 time=0.262 ms
+
+--- 10.41.100.12 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.262/0.262/0.262/0.000 ms
+Exit code: 0
+
+$ bu2 ping -c 1 -W 1 10.41.100.10
+PING 10.41.100.10 (10.41.100.10) 56(84) bytes of data.
+64 bytes from 10.41.100.10: icmp_seq=1 ttl=64 time=0.072 ms
+
+--- 10.41.100.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.072/0.072/0.072/0.000 ms
+Exit code: 0
+
+$ bu2 ping -c 1 -W 1 10.41.100.12
+PING 10.41.100.12 (10.41.100.12) 56(84) bytes of data.
+64 bytes from 10.41.100.12: icmp_seq=1 ttl=64 time=0.242 ms
+
+--- 10.41.100.12 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.242/0.242/0.242/0.000 ms
+Exit code: 0
+
+$ bu3 ping -c 1 -W 1 10.41.100.10
+PING 10.41.100.10 (10.41.100.10) 56(84) bytes of data.
+64 bytes from 10.41.100.10: icmp_seq=1 ttl=64 time=0.138 ms
+
+--- 10.41.100.10 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.138/0.138/0.138/0.000 ms
+Exit code: 0
+
+$ bu3 ping -c 1 -W 1 10.41.100.11
+PING 10.41.100.11 (10.41.100.11) 56(84) bytes of data.
+64 bytes from 10.41.100.11: icmp_seq=1 ttl=64 time=0.077 ms
+
+--- 10.41.100.11 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.077/0.077/0.077/0.000 ms
+Exit code: 0
+

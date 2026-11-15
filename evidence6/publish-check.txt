@@ -1,0 +1,6 @@
+$ python3 make_page6.py blackhole.yaml
+PROBLEM: tenant it: MTU 1500 + VXLAN 50 = 1550 bytes exceeds underlay MTU 1500 by 50 bytes
+PROBLEM: tenant bu: MTU 1500 + VXLAN 50 = 1550 bytes exceeds underlay MTU 1500 by 50 bytes
+Fix the design first: a design with problems doesn't get published.
+Exit code: 1
+Valid page unchanged: yes

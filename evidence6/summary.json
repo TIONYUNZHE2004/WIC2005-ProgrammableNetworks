@@ -1,0 +1,23 @@
+{
+  "run_utc": "2026-11-15T07:12:45.446629+00:00",
+  "environment": "User's WSL Ubuntu; firdaussahran/netlab-mininet:1.0 course container",
+  "within_tenant_pairs_passed": 12,
+  "flood_isolation_design": "overlay.yaml",
+  "isolation": "IT and BU resolve the shared IP to different MACs; BU capture quiet during IT ping",
+  "blackhole_iperf": {
+    "receiver": "0.00 bits/sec",
+    "exit_code": 0
+  },
+  "blackhole_largest_ping_data": 1422,
+  "blackhole_smallest_failing_ping_data": 1423,
+  "fix_a": {
+    "receiver": "4.02 Gbits/sec",
+    "exit_code": 0,
+    "largest_ping_data": 1422
+  },
+  "fix_b": {
+    "receiver": "4.44 Gbits/sec",
+    "exit_code": 0,
+    "largest_ping_data": 1472
+  }
+}
