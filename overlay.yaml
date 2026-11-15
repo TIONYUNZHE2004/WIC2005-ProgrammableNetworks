@@ -1,0 +1,32 @@
+# IT and BU use separate VXLAN networks with the same IP subnet.
+# hv1-hv4 get 10.41.0.1-10.41.0.4 in this order.
+# Each department's VMs get 10.41.100.10, .11 and .12 in list order.
+# MACs are 02:VV:VV:VV:00:XX: VNI in hex, then the last IP byte.
+# IT: 02:00:00:64:00:0a-0c. BU: 02:00:00:c8:00:0a-0c.
+# Start with MTU 1500 everywhere to demonstrate the problem.
+
+student_id_last4: "4941"
+
+underlay:
+  network: 10.41.0.0/24
+  mtu: 1500                    # the largest IP packet the underlay carries
+
+hypervisors: [hv1, hv2, hv3, hv4]
+
+tenants:
+  - name: it
+    vni: 100
+    network: 10.41.100.0/24
+    mtu: 1500                  # the largest IP packet this tenant's VMs send
+    vms:                       # [VM name, the hypervisor it runs on]
+      - [it1, hv1]
+      - [it2, hv2]
+      - [it3, hv3]
+  - name: bu
+    vni: 200
+    network: 10.41.100.0/24    # same addresses as IT; VNI 200 keeps BU separate
+    mtu: 1500
+    vms:
+      - [bu1, hv2]
+      - [bu2, hv3]
+      - [bu3, hv4]
