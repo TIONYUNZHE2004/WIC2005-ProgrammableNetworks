@@ -3,7 +3,7 @@
 # Each department's VMs get 10.41.100.10, .11 and .12 in list order.
 # MACs are 02:VV:VV:VV:00:XX: VNI in hex, then the last IP byte.
 # IT: 02:00:00:64:00:0a-0c. BU: 02:00:00:c8:00:0a-0c.
-# Start with MTU 1500 everywhere to demonstrate the problem.
+# Final choice: tenant MTU 1450, underlay MTU 1500 (Fix A).
 
 student_id_last4: "4941"
 
@@ -17,7 +17,7 @@ tenants:
   - name: it
     vni: 100
     network: 10.41.100.0/24
-    mtu: 1500                  # the largest IP packet this tenant's VMs send
+    mtu: 1450                  # tenant IP + 50 bytes fits underlay MTU 1500
     vms:                       # [VM name, the hypervisor it runs on]
       - [it1, hv1]
       - [it2, hv2]
@@ -25,7 +25,7 @@ tenants:
   - name: bu
     vni: 200
     network: 10.41.100.0/24    # same addresses as IT; VNI 200 keeps BU separate
-    mtu: 1500
+    mtu: 1450
     vms:
       - [bu1, hv2]
       - [bu2, hv3]

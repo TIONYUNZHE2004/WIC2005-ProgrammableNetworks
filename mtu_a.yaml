@@ -3,7 +3,7 @@
 # Each department's VMs get 10.41.100.10, .11 and .12 in list order.
 # MACs are 02:VV:VV:VV:00:XX: VNI in hex, then the last IP byte.
 # IT: 02:00:00:64:00:0a-0c. BU: 02:00:00:c8:00:0a-0c.
-# Start with MTU 1500 everywhere to demonstrate the problem.
+# Fix A: tenant MTU 1450, underlay MTU 1500.
 
 student_id_last4: "4941"
 

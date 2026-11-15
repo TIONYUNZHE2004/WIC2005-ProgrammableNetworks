@@ -7,16 +7,35 @@ repository: https://github.com/TIONYUNZHE2004/WIC2005-ProgrammableNetworks
 answers:
   design:
     question: "Describe your design: hypervisors, tenants, VNIs and addresses. Which tenants overlap, and why did you place each VM where you did?"
-    answer: ""
+    answer: |
+      I chose four servers on 10.41.0.0/24. hv1 to hv4 use .1 to .4. IT uses VNI 100, with it1 on hv1, it2 on hv2 and it3 on hv3. BU uses VNI 200, with bu1 on hv2, bu2 on hv3 and bu3 on hv4.
+
+      Both departments use 10.41.100.0/24. Each has VMs at .10, .11 and .12. This places each department on three servers. hv2 and hv3 host both departments, so I can test separation on shared servers.
   isolation:
     question: "Two of your VMs have the same IP address. Using your evidence, explain how a ping reaches the right one — and what would have to go wrong for one tenant to see another's traffic."
-    answer: ""
+    answer: |
+      it2 and bu2 both use 10.41.100.11. IT's ping resolves this IP to 02:00:00:64:00:0b. BU's ping resolves it to 02:00:00:c8:00:0b. These are different VMs. The capture on bu2 records zero packets during IT's ping.
+
+      Each department has its own bridge and VNI. A received VNI 100 frame goes to IT's bridge, not BU's bridge. A leak could occur if I attach a VM to the wrong bridge, or join both departments to the same VNI and bridge.
   flood_learn:
     question: "Using your evidence, explain what was flooded, to which hypervisors, and what each VTEP learned. With 50 hypervisors in one VNI, how many copies would one broadcast need — and how would EVPN change that?"
-    answer: ""
+    answer: |
+      Before traffic, hv1 has two zero-MAC flood entries: hv2 at 10.41.0.2 and hv3 at 10.41.0.3. The other permanent entries are local device MACs, not learned remote VMs.
+
+      it1's ARP request is copied to hv2 and hv3. hv3 captures it in VNI 100, although the ping is between it1 and it2. Afterwards, hv3 knows it1's MAC is behind hv1. hv1 knows it2's MAC is behind hv2. Later frames to that learned MAC need only one remote destination.
+
+      With 50 servers in one VNI, a broadcast needs 49 remote copies using this method. EVPN advertises MAC locations through BGP. This reduces unknown-unicast flooding; ARP suppression can also reduce ARP broadcasts. Other broadcasts can still need flooding.
   mtu:
     question: "Compare your two MTU fixes using your measurements. Which would you choose for a data centre, what does each cost, and who has to change what?"
-    answer: ""
+    answer: |
+      VXLAN adds 50 bytes here. The original 1500-byte VM packet needs 1550 bytes on the underlay. Small pings work, but large packets fail. The measured limit is 1422 bytes of ping data: 1422 + 28 bytes for IPv4 and ICMP + 50 = 1500. Payload 1423 fails. TCP reports 0.00 bit/s received.
+
+      Fix A uses VM MTU 1450 and underlay MTU 1500. Ping data 1422 passes and 1423 fails. TCP reaches 4.02 Gbit/s. Fix B uses VM MTU 1500 and underlay MTU 9000. Ping data 1472 passes and 1473 fails. TCP reaches 4.44 Gbit/s. These are single local runs, not proof that B is always faster.
+
+      I choose A because I prefer to keep the underlay settings. The VM administrator must set each guest MTU to 1450. This reduces available packet space by 50 bytes. B keeps guest MTU 1500, but the network administrator must enable and test jumbo frames along the whole underlay path. Unsupported equipment may also need replacement.
   p4:
     question: "If your hypervisors' VTEPs were P4 switches running the lecture's vtep.p4, what would have to fill the vtep_encap table, and how? What would replace flood-and-learn?"
-    answer: ""
+    answer: |
+      A controller must fill vtep_encap at run time, for example through P4Runtime. In the lecture, its key is the incoming VM port and destination MAC. The action supplies the VNI, local and remote VTEP IPs, outer MACs and output port. On hv1, it2's MAC maps to VNI 100 and remote VTEP 10.41.0.2.
+
+      The parser does not add table entries. For learning from traffic, the switch can send a digest to the controller, which installs an entry. EVPN replaces that flood-and-learn method: BGP advertises local MAC locations, and a controller installs the corresponding P4 entries. Separate decapsulation entries select the correct tenant and VM port.
