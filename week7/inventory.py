@@ -13,6 +13,7 @@ import random
 import sys
 import time
 from collections import Counter
+from urllib.parse import urlsplit
 
 import requests
 
@@ -38,19 +39,25 @@ class Client:
         self.token = r.json()["token"]
         print(f"logged in as {user}")
 
-    def get_page(self, url):
-        """Read one page. Repeat the same GET after a recoverable error."""
+    def request(self, method, url, *, body=None, key=None):
+        """Send one operation. A POST needs the same key for every retry."""
+        if method not in {"GET", "PUT", "DELETE"} and not (method == "POST" and key):
+            raise ValueError(f"Cannot retry an unkeyed {method}")
+        origin, target = urlsplit(API), urlsplit(url)
+        if (target.scheme, target.netloc) != (origin.scheme, origin.netloc):
+            raise ValueError("API URL points to a different server")
         if self.token is None:
             self.login()
 
-        failures = 0
-        rate_limits = 0
-        refreshed = False
+        failures = rate_limits = refreshes = 0
         while True:
+            headers = {"Authorization": f"Bearer {self.token}"}
+            if key:
+                headers["Idempotency-Key"] = key
             self.requests += 1
             try:
-                response = requests.get(
-                    url, headers={"Authorization": f"Bearer {self.token}"}, timeout=5
+                response = requests.request(
+                    method, url, json=body, headers=headers, timeout=5, allow_redirects=False
                 )
             except (requests.ConnectionError, requests.Timeout) as error:
                 failure = type(error).__name__
@@ -58,10 +65,10 @@ class Client:
                 if failures == 6:
                     raise
             else:
-                if response.status_code == 401 and not refreshed:
-                    print("401: refreshing token and retrying the same page")
+                if response.status_code == 401 and refreshes < 3:
+                    print("401: refreshing token and retrying the same request")
                     self.login()
-                    refreshed = True
+                    refreshes += 1
                     continue
                 if response.status_code == 429:
                     rate_limits += 1
@@ -71,8 +78,12 @@ class Client:
                     print(f"429: waiting {wait}s before retry")
                     time.sleep(wait)
                     continue
+                if response.status_code == 404 and method == "DELETE":
+                    return response  # A previous attempt may already have removed it.
                 if response.status_code != 503:
                     response.raise_for_status()
+                    if not 200 <= response.status_code < 300:
+                        raise ValueError(f"Unexpected HTTP status {response.status_code}")
                     return response
                 failure = "503"
                 failures += 1
@@ -80,16 +91,23 @@ class Client:
                     response.raise_for_status()
 
             wait = 2 ** (failures - 1) + random.uniform(0, 0.25)
-            print(f"{failure}: waiting {wait:.2f}s before retry")
+            print(f"{failure}: {method} {target.path}, waiting {wait:.2f}s before retry")
             time.sleep(wait)
 
+    def get_page(self, url):
+        """Read one page with the same retry rules as the sync client."""
+        return self.request("GET", url)
+
     def get_all(self, url):
-        """Collect all items and the total from the first page."""
+        """Collect every page and read X-Total-Count if the API provides it."""
         items, total = [], None
+        first = True
         while url is not None:
             response = self.get_page(url)
-            if total is None:
-                total = int(response.headers["X-Total-Count"])
+            if first:
+                count = response.headers.get("X-Total-Count")
+                total = int(count) if count is not None else None
+                first = False
             page = response.json()
             items.extend(page["items"])
             url = page["next"]
