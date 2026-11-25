@@ -1,0 +1,185 @@
+2026-11-25T22:46:35.204043+00:00
+Lab API for student …4941: 241 devices on 10.41.0.0/16, tokens last 3s, 2 requests/s per token. Listening on port 8000.
+22:46:25 172.21.0.2 "GET /api/v1/ HTTP/1.1" 200 -
+22:46:26 172.21.0.2 "POST /api/v1/auth/token HTTP/1.1" 200 -
+22:46:26 172.21.0.2 "GET /api/v1/vlans HTTP/1.1" 200 -
+22:46:26 172.21.0.2 "GET /api/v1/acl/entries HTTP/1.1" 200 -
+22:46:26 172.21.0.2 "PUT /api/v1/vlans/10 HTTP/1.1" 429 -
+22:46:27 172.21.0.2 "PUT /api/v1/vlans/10 HTTP/1.1" 200 -
+22:46:27 172.21.0.2 code 400, message Bad HTTP/0.9 request type ('{"name":')
+22:46:27 172.21.0.2 "{"name": "it-users"}" 400 -
+22:46:27 172.21.0.2 "PUT /api/v1/vlans/20 HTTP/1.1" 200 -
+22:46:27 172.21.0.2 "PUT /api/v1/vlans/30 HTTP/1.1" 429 -
+22:46:28 172.21.0.2 "PUT /api/v1/vlans/30 HTTP/1.1" 201 -
+22:46:28 172.21.0.2 code 400, message Bad HTTP/0.9 request type ('{"name":')
+22:46:28 172.21.0.2 "{"name": "bu-users"}" 400 -
+22:46:28 172.21.0.2 "PUT /api/v1/vlans/40 HTTP/1.1" 201 -
+22:46:28 172.21.0.2 "PUT /api/v1/vlans/50 HTTP/1.1" 429 -
+22:46:29 172.21.0.2 "PUT /api/v1/vlans/50 HTTP/1.1" 401 -
+22:46:29 172.21.0.2 code 400, message Bad HTTP/0.9 request type ('{"name":')
+22:46:29 172.21.0.2 "{"name": "management"}" 400 -
+22:46:29 172.21.0.2 "POST /api/v1/auth/token HTTP/1.1" 200 -
+22:46:29 172.21.0.2 "PUT /api/v1/vlans/50 HTTP/1.1" 201 -
+22:46:29 172.21.0.2 code 400, message Bad HTTP/0.9 request type ('{"name":')
+22:46:29 172.21.0.2 "{"name": "management"}" 400 -
+22:46:29 172.21.0.2 "PUT /api/v1/vlans/60 HTTP/1.1" 201 -
+22:46:29 172.21.0.2 "DELETE /api/v1/vlans/99 HTTP/1.1" 429 -
+22:46:30 172.21.0.2 "DELETE /api/v1/vlans/99 HTTP/1.1" 204 -
+22:46:30 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 201 -
+22:46:30 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 429 -
+22:46:31 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 201 -
+22:46:31 172.21.0.2 code 400, message Bad request version ('"bu-no-ssh-to-it"}')
+22:46:31 172.21.0.2 "{"action": "deny", "src": "10.41.30.0/24", "dst": "10.41.20.0/24", "protocol": "tcp", "port": 22, "description": "bu-no-ssh-to-it"}" 400 -
+22:46:31 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 201 -
+22:46:31 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 429 -
+22:46:32 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 401 -
+22:46:32 172.21.0.2 code 400, message Bad request version ('"bu-users-https"}')
+22:46:32 172.21.0.2 "{"action": "permit", "src": "10.41.30.0/24", "dst": "10.41.40.0/24", "protocol": "tcp", "port": 443, "description": "bu-users-https"}" 400 -
+22:46:32 172.21.0.2 "POST /api/v1/auth/token HTTP/1.1" 200 -
+22:46:32 172.21.0.2 "POST /api/v1/acl/entries HTTP/1.1" 201 -
+22:46:32 172.21.0.2 code 400, message Bad request version ('"bu-users-https"}')
+22:46:32 172.21.0.2 "{"action": "permit", "src": "10.41.30.0/24", "dst": "10.41.40.0/24", "protocol": "tcp", "port": 443, "description": "bu-users-https"}" 400 -
+22:46:32 172.21.0.2 "GET /api/v1/vlans HTTP/1.1" 200 -
+22:46:32 172.21.0.2 "GET /api/v1/acl/entries HTTP/1.1" 429 -
+22:46:33 172.21.0.2 "GET /api/v1/acl/entries HTTP/1.1" 200 -
+22:46:34 172.21.0.2 "GET /api/v1/lab/audit HTTP/1.1" 200 -
+22:46:35 172.21.0.2 "POST /api/v1/auth/token HTTP/1.1" 200 -
+22:46:35 172.21.0.2 "GET /api/v1/vlans HTTP/1.1" 200 -
+22:46:35 172.21.0.2 "GET /api/v1/acl/entries HTTP/1.1" 200 -
+
+$ python3 sync.py intent.yaml
+logged in as netops
+Plan: 11 change(s)
+  Rename VLAN 10 from users to it-users
+  Rename VLAN 20 from servers to it-servers
+  Create VLAN 30 bu-users
+  Create VLAN 40 bu-servers
+  Create VLAN 50 management
+  Create VLAN 60 guest
+  Delete VLAN 99 old-guest
+  Add ACL deny 10.41.60.0/24 to 10.41.50.0/24 any
+  Add ACL deny 10.41.30.0/24 to 10.41.20.0/24 tcp/22
+  Add ACL permit 10.41.10.0/24 to 10.41.20.0/24 tcp/443
+  Add ACL permit 10.41.30.0/24 to 10.41.40.0/24 tcp/443
+429: waiting 1s before retry
+Applied: Rename VLAN 10 from users to it-users [HTTP 200]
+Applied: Rename VLAN 20 from servers to it-servers [HTTP 200]
+429: waiting 1s before retry
+Applied: Create VLAN 30 bu-users [HTTP 201]
+Applied: Create VLAN 40 bu-servers [HTTP 201]
+429: waiting 1s before retry
+401: refreshing token and retrying the same request
+logged in as netops
+Applied: Create VLAN 50 management [HTTP 201]
+Applied: Create VLAN 60 guest [HTTP 201]
+429: waiting 1s before retry
+Applied: Delete VLAN 99 old-guest [HTTP 204]
+Applied: Add ACL deny 10.41.60.0/24 to 10.41.50.0/24 any [HTTP 201]
+429: waiting 1s before retry
+Applied: Add ACL deny 10.41.30.0/24 to 10.41.20.0/24 tcp/22 [HTTP 201]
+Applied: Add ACL permit 10.41.10.0/24 to 10.41.20.0/24 tcp/443 [HTTP 201]
+429: waiting 1s before retry
+401: refreshing token and retrying the same request
+logged in as netops
+Applied: Add ACL permit 10.41.30.0/24 to 10.41.40.0/24 tcp/443 [HTTP 201]
+429: waiting 1s before retry
+Verified: API state matches intent.
+
+GET /api/v1/lab/audit
+{
+  "writes": 11,
+  "items": [
+    {
+      "seq": 1,
+      "time": "22:46:27",
+      "method": "PUT",
+      "path": "/api/v1/vlans/10",
+      "status": 200,
+      "change": "set VLAN 10 it-users"
+    },
+    {
+      "seq": 2,
+      "time": "22:46:27",
+      "method": "PUT",
+      "path": "/api/v1/vlans/20",
+      "status": 200,
+      "change": "set VLAN 20 it-servers"
+    },
+    {
+      "seq": 3,
+      "time": "22:46:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/30",
+      "status": 201,
+      "change": "created VLAN 30 bu-users"
+    },
+    {
+      "seq": 4,
+      "time": "22:46:28",
+      "method": "PUT",
+      "path": "/api/v1/vlans/40",
+      "status": 201,
+      "change": "created VLAN 40 bu-servers"
+    },
+    {
+      "seq": 5,
+      "time": "22:46:29",
+      "method": "PUT",
+      "path": "/api/v1/vlans/50",
+      "status": 201,
+      "change": "created VLAN 50 management"
+    },
+    {
+      "seq": 6,
+      "time": "22:46:29",
+      "method": "PUT",
+      "path": "/api/v1/vlans/60",
+      "status": 201,
+      "change": "created VLAN 60 guest"
+    },
+    {
+      "seq": 7,
+      "time": "22:46:30",
+      "method": "DELETE",
+      "path": "/api/v1/vlans/99",
+      "status": 204,
+      "change": "deleted VLAN 99"
+    },
+    {
+      "seq": 8,
+      "time": "22:46:30",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 1: deny 10.41.60.0/24 → 10.41.50.0/24 any"
+    },
+    {
+      "seq": 9,
+      "time": "22:46:31",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 2: deny 10.41.30.0/24 → 10.41.20.0/24 tcp/22"
+    },
+    {
+      "seq": 10,
+      "time": "22:46:31",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 3: permit 10.41.10.0/24 → 10.41.20.0/24 tcp/443"
+    },
+    {
+      "seq": 11,
+      "time": "22:46:32",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 4: permit 10.41.30.0/24 → 10.41.40.0/24 tcp/443"
+    }
+  ]
+}
+
+Independent VLAN and ACL checks matched the intent.
+
+API access during sync:
