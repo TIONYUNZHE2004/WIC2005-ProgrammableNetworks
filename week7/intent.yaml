@@ -1,0 +1,18 @@
+# Week 7 intent for the IT and BU lab.
+# Each VLAN ID also gives the third octet of its 10.41.<id>.0/24 subnet.
+# VLAN 1 is managed by the API. VLAN 99 from the starter state can be removed.
+student_id_last4: "4941"
+
+vlans:
+  - {id: 10, name: it-users}
+  - {id: 20, name: it-servers}
+  - {id: 30, name: bu-users}
+  - {id: 40, name: bu-servers}
+  - {id: 50, name: management}
+  - {id: 60, name: guest}
+
+acl:
+  - {action: deny, src: 10.41.60.0/24, dst: 10.41.50.0/24, description: guest-no-management}
+  - {action: deny, src: 10.41.30.0/24, dst: 10.41.20.0/24, protocol: tcp, port: 22, description: bu-no-ssh-to-it}
+  - {action: permit, src: 10.41.10.0/24, dst: 10.41.20.0/24, protocol: tcp, port: 443, description: it-users-https}
+  - {action: permit, src: 10.41.30.0/24, dst: 10.41.40.0/24, protocol: tcp, port: 443, description: bu-users-https}
