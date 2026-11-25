@@ -1,0 +1,54 @@
+PUT /api/v1/vlans/30: HTTP/1.1 201 Created
+PUT /api/v1/vlans/30: HTTP/1.1 200 OK
+DELETE /api/v1/vlans/99: HTTP/1.1 204 No Content
+DELETE /api/v1/vlans/99: HTTP/1.1 404 Not Found
+POST /api/v1/acl/entries, key=None: HTTP/1.1 201 Created, entry 1
+POST /api/v1/acl/entries, key=None: HTTP/1.1 201 Created, entry 2
+POST /api/v1/acl/entries, key=guests-no-ssh-1: HTTP/1.1 201 Created, entry 3
+POST /api/v1/acl/entries, key=guests-no-ssh-1: HTTP/1.1 201 Created, entry 3, Idempotent-Replayed: true
+GET /api/v1/lab/audit
+{
+  "writes": 5,
+  "items": [
+    {
+      "seq": 1,
+      "time": "22:34:04",
+      "method": "PUT",
+      "path": "/api/v1/vlans/30",
+      "status": 201,
+      "change": "created VLAN 30 guests"
+    },
+    {
+      "seq": 2,
+      "time": "22:34:04",
+      "method": "DELETE",
+      "path": "/api/v1/vlans/99",
+      "status": 204,
+      "change": "deleted VLAN 99"
+    },
+    {
+      "seq": 3,
+      "time": "22:34:04",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 1: deny 10.41.30.0/24 \u2192 10.41.20.0/24 tcp/22"
+    },
+    {
+      "seq": 4,
+      "time": "22:34:04",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 2: deny 10.41.30.0/24 \u2192 10.41.20.0/24 tcp/22"
+    },
+    {
+      "seq": 5,
+      "time": "22:34:04",
+      "method": "POST",
+      "path": "/api/v1/acl/entries",
+      "status": 201,
+      "change": "added ACL entry 3: deny 10.41.30.0/24 \u2192 10.41.20.0/24 tcp/22"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+GET /openapi.json
+Device limit maximum: 50
+ACL item methods: DELETE, GET, PARAMETERS
+Idempotency-Key: A unique key for this change. Retrying with the same key and the same body returns the first result instead of adding the entry again (response header Idempotent-Replayed: true). The same key with a different body is rejected with 422.
+
+GET /api/v1/devices?site=kl-hq&limit=50 with the operator bearer token; follow next until null
+61 devices at kl-hq:
+sw-kl-hq-001 10.41.200.1
+sw-kl-hq-002 10.41.200.2
+sw-kl-hq-003 10.41.200.3
+sw-kl-hq-004 10.41.200.4
+sw-kl-hq-005 10.41.200.5
+sw-kl-hq-006 10.41.200.6
+sw-kl-hq-007 10.41.200.7
+sw-kl-hq-008 10.41.200.8
+sw-kl-hq-009 10.41.200.9
+sw-kl-hq-010 10.41.200.10
+sw-kl-hq-011 10.41.200.11
+sw-kl-hq-012 10.41.200.12
+sw-kl-hq-013 10.41.200.13
+sw-kl-hq-014 10.41.200.14
+sw-kl-hq-015 10.41.200.15
+sw-kl-hq-016 10.41.200.16
+sw-kl-hq-017 10.41.200.17
+sw-kl-hq-018 10.41.200.18
+sw-kl-hq-019 10.41.200.19
+sw-kl-hq-020 10.41.200.20
+sw-kl-hq-021 10.41.200.21
+sw-kl-hq-022 10.41.200.22
+sw-kl-hq-023 10.41.200.23
+sw-kl-hq-024 10.41.200.24
+sw-kl-hq-025 10.41.200.25
+sw-kl-hq-026 10.41.200.26
+sw-kl-hq-027 10.41.200.27
+sw-kl-hq-028 10.41.200.28
+sw-kl-hq-029 10.41.200.29
+sw-kl-hq-030 10.41.200.30
+sw-kl-hq-031 10.41.200.31
+sw-kl-hq-032 10.41.200.32
+sw-kl-hq-033 10.41.200.33
+sw-kl-hq-034 10.41.200.34
+sw-kl-hq-035 10.41.200.35
+sw-kl-hq-036 10.41.200.36
+sw-kl-hq-037 10.41.200.37
+sw-kl-hq-038 10.41.200.38
+sw-kl-hq-039 10.41.200.39
+sw-kl-hq-040 10.41.200.40
+sw-kl-hq-041 10.41.200.41
+sw-kl-hq-042 10.41.200.42
+sw-kl-hq-043 10.41.200.43
+sw-kl-hq-044 10.41.200.44
+sw-kl-hq-045 10.41.200.45
+sw-kl-hq-046 10.41.200.46
+sw-kl-hq-047 10.41.200.47
+sw-kl-hq-048 10.41.200.48
+sw-kl-hq-049 10.41.200.49
+sw-kl-hq-050 10.41.200.50
+sw-kl-hq-051 10.41.200.51
+sw-kl-hq-052 10.41.200.52
+sw-kl-hq-053 10.41.200.53
+sw-kl-hq-054 10.41.200.54
+sw-kl-hq-055 10.41.200.55
+sw-kl-hq-056 10.41.200.56
+sw-kl-hq-057 10.41.200.57
+sw-kl-hq-058 10.41.200.58
+sw-kl-hq-059 10.41.200.59
+sw-kl-hq-060 10.41.200.60
+sw-kl-hq-061 10.41.200.61

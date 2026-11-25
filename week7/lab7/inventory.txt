@@ -1,0 +1,16 @@
+logged in as netops
+503: waiting 1.09s before retry
+503: waiting 1.06s before retry
+503: waiting 1.19s before retry
+503: waiting 2.20s before retry
+503: waiting 1.04s before retry
+503: waiting 1.15s before retry
+503: waiting 1.17s before retry
+503: waiting 1.20s before retry
+429: waiting 1s before retry
+503: waiting 1.12s before retry
+241 devices read (the API says 241), in 36 requests; saved devices.json
+  johor: 60
+  kl-hq: 61
+  penang: 60
+  pj-dc: 60

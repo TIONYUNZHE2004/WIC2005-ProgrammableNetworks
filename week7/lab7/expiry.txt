@@ -1,0 +1,24 @@
+Lab API for student …4941: 241 devices on 10.41.0.0/16, tokens last 5s, 2 requests/s per token. Listening on port 8000.
+22:34:46 172.21.0.3 "GET /api/v1/ HTTP/1.1" 200 -
+logged in as netops
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+401: refreshing token and retrying the same page
+logged in as netops
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+429: waiting 1s before retry
+401: refreshing token and retrying the same page
+logged in as netops
+429: waiting 1s before retry
+429: waiting 1s before retry
+241 devices read (the API says 241), in 42 requests; saved devices.json
+  johor: 60
+  kl-hq: 61
+  penang: 60
+  pj-dc: 60

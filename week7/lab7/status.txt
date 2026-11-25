@@ -1,0 +1,43 @@
+GET /api/v1/vlans/77 (operator)
+HTTP/1.1 404 Not Found
+{
+  "error": "VLAN 77 not found"
+}
+
+POST /api/v1/vlans/10 (operator)
+HTTP/1.1 405 Method Not Allowed
+{
+  "error": "POST is not allowed on a single VLAN"
+}
+
+POST /api/v1/vlans (operator)
+Body: {"id": 30, "name": guest}
+HTTP/1.1 400 Bad Request
+{
+  "error": "the request body is not valid JSON"
+}
+
+PUT /api/v1/vlans/5000 (operator)
+Body: {"name": "invalid"}
+HTTP/1.1 422 Unprocessable Entity
+{
+  "error": "id must be a VLAN number from 1 to 4094"
+}
+
+POST /api/v1/vlans (operator)
+Body: {"id": 10, "name": "users"}
+HTTP/1.1 409 Conflict
+{
+  "error": "VLAN 10 already exists: use PUT to replace it"
+}
+
+PUT /api/v1/vlans/30 (viewer)
+Body: {"name": "guests"}
+HTTP/1.1 403 Forbidden
+{
+  "error": "viewer has a read-only token"
+}
+
+10 rapid GET /api/v1/vlans requests with one fresh token
+200 200 200 200 200 429 429 429 429 429
+Retry-After: 1
